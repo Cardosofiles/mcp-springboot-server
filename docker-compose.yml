@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mock-mcp
+    environment:
+      - MCP_ENDPOINT=http://mock-mcp:5001/jsonrpc
+  mock-mcp:
+    image: stoplight/prism:4
+    command: mock -h 0.0.0.0 /tmp/mcp-openapi.yaml
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./mock:/tmp
